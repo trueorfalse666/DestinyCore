@@ -118,7 +118,7 @@ uint32 PlayerBotBaseInfo::GetCharIDByNoArenaType(bool faction, uint32 prof, uint
 PlayerBotMgr::PlayerBotMgr() :
     m_BotAccountAmount(90),
     m_LastBotAccountIndex(0),
-    m_MaxOnlineBot(10),
+    m_MaxOnlineBot(180),
     m_BotOnlineCount(0),
     m_LFGSearchTick(0),
     m_ArenaSearchTick(0)
