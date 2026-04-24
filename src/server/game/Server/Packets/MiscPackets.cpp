@@ -126,6 +126,11 @@ void WorldPackets::Misc::TimeSyncResponse::Read()
     _worldPacket >> ClientTime;
 }
 
+void WorldPackets::Misc::DiscardedTimeSyncAcks::Read()
+{
+    _worldPacket >> MaxSequenceIndex;
+}
+
 WorldPacket const* WorldPackets::Misc::UITime::Write()
 {
     _worldPacket << Time;
