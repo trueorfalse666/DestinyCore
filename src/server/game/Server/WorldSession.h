@@ -565,6 +565,7 @@ namespace WorldPackets
         class ViolenceLevel;
         class PlayerSelectFaction;
         class TimeSyncResponse;
+        class DiscardedTimeSyncAcks;
         class TutorialSetFlag;
         class SetDungeonDifficulty;
         class SetRaidDifficulty;
@@ -1717,6 +1718,7 @@ class TC_GAME_API WorldSession
         void HandleSetRaidDifficultyOpcode(WorldPackets::Misc::SetRaidDifficulty& setRaidDifficulty);
         void HandleSetTitleOpcode(WorldPackets::Character::SetTitle& packet);
         void HandleTimeSyncResponse(WorldPackets::Misc::TimeSyncResponse& packet);
+        void HandleDiscardedTimeSyncAcks(WorldPackets::Misc::DiscardedTimeSyncAcks& packet);
         void HandleWhoIsOpcode(WorldPackets::Who::WhoIsRequest& packet);
         void HandleResetInstancesOpcode(WorldPackets::Instance::ResetInstances& packet);
         void HandleInstanceLockResponse(WorldPackets::Instance::InstanceLockResponse& packet);
