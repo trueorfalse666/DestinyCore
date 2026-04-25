@@ -1,27 +1,11 @@
-REVOKE ALL PRIVILEGES ON * . * FROM 'destiny'@'localhost';
+-- 回收权限（清理干净，不报错）
+DROP USER IF EXISTS 'destiny'@'localhost';
 
-REVOKE ALL PRIVILEGES ON `world` . * FROM 'destiny'@'localhost';
-
-REVOKE GRANT OPTION ON `world` . * FROM 'destiny'@'localhost';
-
-REVOKE ALL PRIVILEGES ON `characters` . * FROM 'destiny'@'localhost';
-
-REVOKE GRANT OPTION ON `characters` . * FROM 'destiny'@'localhost';
-
-REVOKE ALL PRIVILEGES ON `auth` . * FROM 'destiny'@'localhost';
-
-REVOKE GRANT OPTION ON `auth` . * FROM 'destiny'@'localhost';
-
-REVOKE ALL PRIVILEGES ON `hotfixes` . * FROM 'destiny'@'localhost';
-
-REVOKE GRANT OPTION ON `hotfixes` . * FROM 'destiny'@'localhost';
-
-DROP USER 'destiny'@'localhost';
-
+-- 删除数据库
 DROP DATABASE IF EXISTS `world`;
-
 DROP DATABASE IF EXISTS `characters`;
-
 DROP DATABASE IF EXISTS `auth`;
-
 DROP DATABASE IF EXISTS `hotfixes`;
+
+-- 刷新权限（必须执行）
+FLUSH PRIVILEGES;
