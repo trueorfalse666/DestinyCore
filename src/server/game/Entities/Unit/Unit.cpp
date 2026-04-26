@@ -7421,6 +7421,18 @@ uint32 Unit::SpellHealingBonusTaken(Unit* caster, SpellInfo const* spellProto, u
         TakenTotal += int32(TakenAdvertisedBenefit * coeff * stack);
     }
 
+    if (damagetype == DOT)
+    {
+        // Healing over time taken percent
+        float minval_hot = float(GetMaxNegativeAuraModifier(SPELL_AURA_MOD_HOT_PCT));
+        if (minval_hot)
+            AddPct(TakenTotalMod, minval_hot);
+
+        float maxval_hot = float(GetMaxPositiveAuraModifier(SPELL_AURA_MOD_HOT_PCT));
+        if (maxval_hot)
+            AddPct(TakenTotalMod, maxval_hot);
+    }
+
     TakenTotalMod *= GetTotalAuraMultiplier(SPELL_AURA_MOD_HEALING_RECEIVED, [caster, spellProto](AuraEffect const* aurEff) -> bool
     {
         if (caster->GetGUID() == aurEff->GetCasterGUID() && aurEff->IsAffectingSpell(spellProto))
