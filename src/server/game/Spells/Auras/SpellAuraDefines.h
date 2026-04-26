@@ -146,7 +146,7 @@ enum AuraType : uint32
     SPELL_AURA_MOD_DISARM                                   = 67,
     SPELL_AURA_MOD_STALKED                                  = 68,
     SPELL_AURA_SCHOOL_ABSORB                                = 69,
-    SPELL_AURA_EXTRA_ATTACKS                                = 70,
+    SPELL_AURA_PERIODIC_WEAPON_PERCENT_DAMAGE               = 70,
     SPELL_AURA_71                                           = 71,
     SPELL_AURA_MOD_POWER_COST_SCHOOL_PCT                    = 72,
     SPELL_AURA_MOD_POWER_COST_SCHOOL                        = 73,
