@@ -800,3 +800,9 @@ void WorldPackets::Misc::ShowTradeSkill::Read()
     _worldPacket >> SpellID;
     _worldPacket >> SkillLineID;
 }
+
+void WorldPackets::Misc::ConversationLineStarted::Read()
+{
+    _worldPacket >> ConversationGUID;
+    _worldPacket >> LineID;
+}
