@@ -462,8 +462,8 @@ pAuraEffectHandler AuraEffectHandler[TOTAL_AURAS]=
     &AuraEffect::HandleShowConfirmationPrompt,                    //394 SPELL_AURA_SHOW_CONFIRMATION_PROMPT
     &AuraEffect::HandleCreateAreaTrigger,                         //395 SPELL_AURA_AREA_TRIGGER
     &AuraEffect::HandleTriggerSpellOnPowerAmount,                 //396 SPELL_AURA_TRIGGER_SPELL_ON_POWER_AMOUNT
-    &AuraEffect::HandleNULL,                                      //397
-    &AuraEffect::HandleNULL,                                      //398
+    &AuraEffect::HandleBattlegroundFlag,                          //397 SPELL_AURA_BATTLEGROUND_FLAG
+    &AuraEffect::HandleBattlegroundFlag,                          //398 SPELL_AURA_BATTLEGROUND_FLAG_2
     &AuraEffect::HandleNULL,                                      //399
     &AuraEffect::HandleAuraModSkill,                              //400 SPELL_AURA_MOD_SKILL_2
     &AuraEffect::HandleNULL,                                      //401
@@ -4208,6 +4208,34 @@ void AuraEffect::HandleModCastingSpeed(AuraApplication const* aurApp, uint8 mode
 
     Unit* target = aurApp->GetTarget();
 
+    // Do not apply such auras in normal way
+    if (GetAmount() >= 1000)
+    {
+        if (apply)
+            target->SetInstantCast(true);
+        else
+        {
+            // only SPELL_AURA_MOD_CASTING_SPEED_NOT_STACK can have this high amount
+            // it's some rare case that you have 2 auras like that, but just in case ;)
+
+            bool remove = true;
+            Unit::AuraEffectList const& castingSpeedNotStack = target->GetAuraEffectsByType(SPELL_AURA_MOD_CASTING_SPEED_NOT_STACK);
+            for (AuraEffect const* aurEff : castingSpeedNotStack)
+            {
+                if (aurEff != this && aurEff->GetAmount() >= 1000)
+                {
+                    remove = false;
+                    break;
+                }
+            }
+
+            if (remove)
+                target->SetInstantCast(false);
+        }
+
+        return;
+    }
+
     target->ApplyCastTimePercentMod((float)GetAmount(), apply);
 }
 
@@ -4591,15 +4619,15 @@ void AuraEffect::HandleAuraDummy(AuraApplication const* aurApp, uint8 mode, bool
 
     Unit* caster = GetCaster();
 
-    if (mode & AURA_EFFECT_HANDLE_REAL)
+    // pet auras
+    if (target->GetTypeId() == TYPEID_PLAYER && (mode & AURA_EFFECT_HANDLE_REAL))
     {
-        // pet auras
         if (PetAura const* petSpell = sSpellMgr->GetPetAura(GetId(), m_effIndex))
         {
             if (apply)
-                target->AddPetAura(petSpell);
+                target->ToPlayer()->AddPetAura(petSpell);
             else
-                target->RemovePetAura(petSpell);
+                target->ToPlayer()->RemovePetAura(petSpell);
         }
     }
 
@@ -5129,6 +5157,26 @@ void AuraEffect::HandleTriggerSpellOnPowerAmount(AuraApplication const* aurApp, 
     if ((GetMiscValueB() == POWER_PROC_UPPER && powerAmount >= GetAmount()) ||
         (GetMiscValueB() == POWER_PROC_LOWER && powerAmount <= GetAmount()))
         target->CastSpell(target, GetSpellEffectInfo()->TriggerSpell, true);
+}
+
+void AuraEffect::HandleBattlegroundFlag(AuraApplication const* aurApp, uint8 mode, bool apply) const
+{
+    if (!(mode & AURA_EFFECT_HANDLE_REAL))
+        return;
+
+    Player* target = aurApp->GetTarget()->ToPlayer();
+
+    // When removing flag aura, handle flag drop
+    if (!apply && target)
+    {
+        if (target->InBattleground())
+        {
+            if (Battleground* bg = target->GetBattleground())
+                bg->EventPlayerDroppedFlag(target);
+        }
+        else
+            sOutdoorPvPMgr->HandleDropFlag(target, GetSpellInfo()->Id);
+    }
 }
 
 void AuraEffect::HandleAuraOpenStable(AuraApplication const* aurApp, uint8 mode, bool apply) const

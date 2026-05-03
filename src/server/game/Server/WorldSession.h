@@ -787,6 +787,7 @@ namespace WorldPackets
         class CancelChannelling;
         class CancelGrowthAura;
         class CancelMountAura;
+        class CancelModSpeedNoControlAuras;
         class PetCancelAura;
         class RequestCategoryCooldowns;
         class CancelCast;
@@ -1589,6 +1590,7 @@ class TC_GAME_API WorldSession
         void HandleCancelAuraOpcode(WorldPackets::Spells::CancelAura& cancelAura);
         void HandleCancelGrowthAuraOpcode(WorldPackets::Spells::CancelGrowthAura& cancelGrowthAura);
         void HandleCancelMountAuraOpcode(WorldPackets::Spells::CancelMountAura& cancelMountAura);
+        void HandleCancelModSpeedNoControlAuras(WorldPackets::Spells::CancelModSpeedNoControlAuras& cancelModSpeedNoControlAuras);
         void HandleUnlearnSpecialization(WorldPackets::Spells::UnlearnSpecialization& packet);
         void HandleCancelAutoRepeatSpellOpcode(WorldPackets::Spells::CancelAutoRepeatSpell& cancelAutoRepeatSpell);
         void HandleUpdateSpellVisualOpcode(WorldPackets::Spells::UpdateSpellVisual& packet);

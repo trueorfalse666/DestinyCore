@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008-2018 TrinityCore <https://www.trinitycore.org/>
+ * This file is part of the DestinyCore Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -329,10 +329,11 @@ public:
     }
 };
 
-class npc_q42740 : public CreatureScript
+// 108920 Captain Angelica
+class npc_captain_angelica_108920 : public CreatureScript
 {
 public:
-    npc_q42740() : CreatureScript("npc_q42740") { }
+    npc_captain_angelica_108920() : CreatureScript("npc_captain_angelica_108920") {}
 
     bool OnGossipSelect(Player* player, Creature* creature, uint32 /*sender*/, uint32 action) override
     {
@@ -341,9 +342,6 @@ public:
         //214608
         player->KilledMonsterCredit(creature->GetEntry());
         player->CastSpell(player, 216356, false); //scene
-        player->TeleportTo(1220, -1879.096436f, 3005.628418f, 0.032851f, player->GetOrientation());
-        player->KilledMonsterCredit(90918);
-        player->KilledMonsterCredit(108920);
 
         return true;
     };
@@ -823,7 +821,7 @@ void AddSC_stormwind_city()
     new gob_q42782();
 	new gob_qq42782();
 	new gob_qqq42782();
-    new npc_q42740();
+    new npc_captain_angelica_108920();
     new npc_q40518();
     new spell_bi_enter_stage1();
     new spell_q42740();
