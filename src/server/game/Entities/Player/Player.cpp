@@ -25925,6 +25925,7 @@ bool Player::AddBattlePetWithSpeciesId(BattlePetSpeciesEntry const* entry, uint1
     }
 
     pet->UpdateStats();
+    pet->UpdateAbilities();
     pet->Health = pet->InfoMaxHealth;
     auto guidlow = pet->AddToPlayer(this);
     _battlePets.emplace(pet->JournalID, pet);
